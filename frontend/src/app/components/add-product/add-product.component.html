@@ -1,0 +1,48 @@
+<div class="card-container">
+  <div class="form-card">
+    <h2>Formulario de Registro</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="id">ID:</label>
+          <input id="id" formControlName="id" (blur)="verificarId()" />
+          <div *ngIf="form.get('id')?.invalid && form.get('id')?.touched" class="error-msg">ID inválido</div>
+          <div *ngIf="idDisponible === false" class="error-msg">❌ El ID ya existe</div>
+          <div *ngIf="idDisponible === true" class="success-msg">✅ ID disponible</div>
+        </div>
+        <div class="form-group">
+          <label for="name">Nombre:</label>
+          <input id="name" formControlName="name" />
+          <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error-msg">Nombre inválido</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="description">Descripción:</label>
+          <textarea id="description" formControlName="description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="logo">Logo (URL):</label>
+          <input id="logo" formControlName="logo" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="date_release">Fecha de Liberación:</label>
+          <input type="date" id="date_release" formControlName="date_release" />
+        </div>
+        <div class="form-group">
+          <label for="date_revision">Fecha de Revisión:</label>
+          <input type="date" id="date_revision" formControlName="date_revision" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button type="button" (click)="onReset()" class="btn-secondary">Reiniciar</button>
+        <button type="submit" [disabled]="form.invalid || idDisponible === false" class="btn-enviar">Enviar</button>
+      </div>
+      <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
+      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+    </form>
+  </div>
+</div>

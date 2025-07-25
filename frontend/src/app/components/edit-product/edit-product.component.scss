@@ -1,0 +1,114 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #f5f8fb;
+    font-family: 'Segoe UI', sans-serif;
+}
+.card-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: #f5f8fb;
+    overflow: hidden;
+}
+.form-card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 900px;
+    box-sizing: border-box;
+}
+.form-card h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 1.5rem;
+    color: #1e293b;
+}
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+}
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+label {
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.4rem;
+}
+input,
+textarea {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 14px;
+    background: white;
+}
+textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+}
+.btn-primary {
+    background-color: #2563eb;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+}
+.btn-primary:hover {
+    background-color: #1e40af;
+}
+.btn-secondary {
+    background-color: #e2e8f0;
+    color: #1e293b;
+    padding: 0.6rem 1.8rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+}
+.btn-secondary:hover {
+    background-color: #cbd5e1;
+}
+.success-msg {
+    color: #059669;
+    margin-top: 1rem;
+}
+.error-msg {
+    color: #dc2626;
+    font-size: 13px;
+}
+.btn-enviar {
+    background-color: #facc15;
+    /* Amarillo */
+    color: #1e293b;
+    padding: 0.6rem 1.8rem;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+.btn-enviar:hover {
+    background-color: #eab308;
+}

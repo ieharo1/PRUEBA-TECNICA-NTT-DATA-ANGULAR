@@ -1,0 +1,58 @@
+<div class="card-container">
+  <div class="top-bar">
+    <input type="text" placeholder="Search..." [(ngModel)]="searchText" (input)="onSearchChange()"
+      class="search-input" />
+    <button class="btn-agregar" routerLink="/agregar">Agregar Producto</button>
+  </div>
+  <div class="table-wrapper">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre del producto</th>
+          <th>Descripción <span class="info-icon">i</span></th>
+          <th>Fecha de liberación <span class="info-icon">i</span></th>
+          <th>Fecha de reestructuración <span class="info-icon">i</span></th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of filteredProducts">
+          <td data-label="Logo">
+            <img [src]="product.logo" alt="{{ product.name }}" class="logo-img" />
+          </td>
+          <td data-label="Nombre del producto">{{ product.name }}</td>
+          <td data-label="Descripción">{{ product.description }}</td>
+          <td data-label="Fecha de liberación">{{ product.date_release }}</td>
+          <td data-label="Fecha de reestructuración">{{ product.date_revision }}</td>
+          <td data-label="Acciones">
+            <div class="dropdown" [class.open]="openedMenu === product.id">
+              <button (click)="toggleMenu(product.id)">⋮</button>
+              <ul class="dropdown-menu" *ngIf="openedMenu === product.id">
+                <li (click)="editarProducto(product)">Editar</li>
+                <li (click)="mostrarModalEliminar(product)">Eliminar</li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="footer-bar">
+    <span>{{ filteredProducts.length }} Resultados</span>
+    <select [(ngModel)]="cantidadMostrar" (change)="onChangeCantidad()">
+      <option [value]="5">5</option>
+      <option [value]="10">10</option>
+      <option [value]="20">20</option>
+    </select>
+  </div>
+</div>
+<!-- MODAL CON EL MENSAJE DE ELIMINAR -->
+<div *ngIf="productoAEliminar" class="modal-backdrop">
+  <div class="modal">
+    <h3>Confirmar eliminación</h3>
+    <p>¿Estás seguro de eliminar el producto <strong>{{ productoAEliminar.name }}</strong>?</p>
+    <button (click)="cancelarEliminar()">Cancelar</button>
+    <button (click)="confirmarEliminar()">Eliminar</button>
+  </div>
+</div>
