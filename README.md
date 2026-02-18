@@ -79,18 +79,19 @@ prueba-tecnica-ntt/
 - Reactive forms
 - Diseño responsive
 
----
-
-🧑‍💻 Isaac Haro
-
-Ingeniero en Sistemas · Full Stack · Automatización · Data
-
-📧 zackharo1@gmail.com  
-📱 098805517  
-💻 https://github.com/ieharo1
 
 ---
 
-## 📄 Licencia
+## 👨‍💻 Desarrollado por Isaac Esteban Haro Torres
 
-MIT — contribuciones bienvenidas 🚀
+**Ingeniero en Sistemas · Full Stack · Automatización · Data**
+
+- 📧 Email: zackharo1@gmail.com
+- 📱 WhatsApp: 098805517
+- 💻 GitHub: https://github.com/ieharo1
+- 🌐 Portafolio: https://ieharo1.github.io/portafolio-isaac.haro/
+
+---
+
+© 2026 Isaac Esteban Haro Torres - Todos los derechos reservados.
+
