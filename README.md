@@ -1,6 +1,6 @@
-# prueba-tecnica-ntt
+# Prueba Técnica NTT DATA Angular
 
-Proyecto para prueba técnica de NTT - Aplicación de Gestión de Productos.
+Proyecto para prueba técnica de NTT DATA - Aplicación de Gestión de Productos.
 
 ---
 
