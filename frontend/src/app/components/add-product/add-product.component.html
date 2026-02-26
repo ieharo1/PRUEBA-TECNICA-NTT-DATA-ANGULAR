@@ -1,48 +1,137 @@
-<div class="card-container">
+<div class="form-container">
   <div class="form-card">
-    <h2>Formulario de Registro</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="id">ID:</label>
-          <input id="id" formControlName="id" (blur)="verificarId()" />
-          <div *ngIf="form.get('id')?.invalid && form.get('id')?.touched" class="error-msg">ID inválido</div>
-          <div *ngIf="idDisponible === false" class="error-msg">❌ El ID ya existe</div>
-          <div *ngIf="idDisponible === true" class="success-msg">✅ ID disponible</div>
-        </div>
-        <div class="form-group">
-          <label for="name">Nombre:</label>
-          <input id="name" formControlName="name" />
-          <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="error-msg">Nombre inválido</div>
-        </div>
+    <div class="form-header">
+      <div class="header-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
       </div>
-      <div class="form-row">
+      <h2>Nuevo Producto</h2>
+      <p>Completa los datos del nuevo producto</p>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="product-form">
+      <div class="form-grid">
         <div class="form-group">
-          <label for="description">Descripción:</label>
-          <textarea id="description" formControlName="description"></textarea>
+          <label for="id">
+            <span class="label-icon">🏷️</span> ID del Producto
+          </label>
+          <input 
+            id="id" 
+            formControlName="id" 
+            (blur)="verificarId()"
+            placeholder="Ej: PROD-001"
+            [class.error]="form.get('id')?.invalid && form.get('id')?.touched"
+            [class.success]="idDisponible === true"
+          />
+          <div class="field-status">
+            @if (idDisponible === true) {
+              <span class="status success">✓ ID disponible</span>
+            }
+            @if (idDisponible === false) {
+              <span class="status error">✕ El ID ya existe</span>
+            }
+            @if (form.get('id')?.invalid && form.get('id')?.touched && idDisponible !== false) {
+              <span class="status error">✕ ID inválido (3-10 caracteres)</span>
+            }
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="logo">Logo (URL):</label>
-          <input id="logo" formControlName="logo" />
+          <label for="name">
+            <span class="label-icon">📝</span> Nombre del Producto
+          </label>
+          <input 
+            id="name" 
+            formControlName="name" 
+            placeholder="Ej: Producto Premium"
+            [class.error]="form.get('name')?.invalid && form.get('name')?.touched"
+          />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <span class="field-error">Mínimo 5 caracteres</span>
+          }
+        </div>
+
+        <div class="form-group full-width">
+          <label for="description">
+            <span class="label-icon">📋</span> Descripción
+          </label>
+          <textarea 
+            id="description" 
+            formControlName="description"
+            placeholder="Describe las características del producto..."
+            rows="3"
+            [class.error]="form.get('description')?.invalid && form.get('description')?.touched"
+          ></textarea>
+          @if (form.get('description')?.invalid && form.get('description')?.touched) {
+            <span class="field-error">Mínimo 10 caracteres</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="logo">
+            <span class="label-icon">🖼️</span> URL del Logo
+          </label>
+          <input 
+            id="logo" 
+            formControlName="logo" 
+            placeholder="https://ejemplo.com/logo.png"
+            [class.error]="form.get('logo')?.invalid && form.get('logo')?.touched"
+          />
+          @if (form.get('logo')?.invalid && form.get('logo')?.touched) {
+            <span class="field-error">URL requerida</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="date_release">
+            <span class="label-icon">📅</span> Fecha de Liberación
+          </label>
+          <input 
+            type="date" 
+            id="date_release" 
+            formControlName="date_release"
+            [class.error]="form.get('date_release')?.invalid && form.get('date_release')?.touched"
+          />
+          @if (form.get('date_release')?.invalid && form.get('date_release')?.touched) {
+            <span class="field-error">Fecha requerida</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="date_revision">
+            <span class="label-icon">🔄</span> Fecha de Revisión
+          </label>
+          <input 
+            type="date" 
+            id="date_revision" 
+            formControlName="date_revision"
+            [class.error]="form.get('date_revision')?.invalid && form.get('date_revision')?.touched"
+          />
+          @if (form.get('date_revision')?.invalid && form.get('date_revision')?.touched) {
+            <span class="field-error">Fecha requerida</span>
+          }
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="date_release">Fecha de Liberación:</label>
-          <input type="date" id="date_release" formControlName="date_release" />
-        </div>
-        <div class="form-group">
-          <label for="date_revision">Fecha de Revisión:</label>
-          <input type="date" id="date_revision" formControlName="date_revision" />
-        </div>
-      </div>
+
       <div class="form-actions">
-        <button type="button" (click)="onReset()" class="btn-secondary">Reiniciar</button>
-        <button type="submit" [disabled]="form.invalid || idDisponible === false" class="btn-enviar">Enviar</button>
+        <button type="button" (click)="onReset()" class="btn-reset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+          Reiniciar
+        </button>
+        <button 
+          type="submit" 
+          [disabled]="form.invalid || idDisponible === false" 
+          class="btn-submit"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 13l4 4L19 7"/>
+          </svg>
+          Guardar Producto
+        </button>
       </div>
-      <p class="success-msg" *ngIf="successMessage">{{ successMessage }}</p>
-      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
     </form>
   </div>
 </div>

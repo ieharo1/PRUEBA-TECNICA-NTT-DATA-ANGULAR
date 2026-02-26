@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -22,7 +23,8 @@ export class EditProductComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private productService: ProductService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -38,10 +40,10 @@ export class EditProductComponent implements OnInit {
 
   crearFormulario() {
     this.form = this.fb.group({
-      id: [{ value: '', disabled: true }, Validators.required],
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      description: ['', [Validators.required, Validators.minLength(5)]],
-      logo: ['', [Validators.required, Validators.pattern(/^https?:\/\/.+/)]],
+      id: [{ value: '', disabled: true }],
+      name: ['', [Validators.required, Validators.minLength(5)]],
+      description: ['', [Validators.required, Validators.minLength(10)]],
+      logo: ['', Validators.required],
       date_release: ['', Validators.required],
       date_revision: ['', Validators.required],
     });
@@ -66,8 +68,12 @@ export class EditProductComponent implements OnInit {
         });
         this.loading = false;
       },
-      error: (err) => {
-        this.errorMessage = 'Error cargando producto: ' + err.message;
+      error: (err: any) => {
+        if (err.status === 0) {
+          this.errorMessage = 'No se puede conectar al servidor. Asegúrate de que el backend esté corriendo.';
+        } else {
+          this.errorMessage = 'Error cargando producto: ' + (err.error?.message || err.message);
+        }
         this.loading = false;
       }
     });
@@ -100,11 +106,18 @@ export class EditProductComponent implements OnInit {
     this.loading = true;
     this.productService.updateProduct(updatedProduct).subscribe({
       next: () => {
+        this.toastService.success('¡Producto actualizado exitosamente!');
         this.loading = false;
-        this.router.navigate(['/productos']);
+        setTimeout(() => {
+          this.router.navigate(['/productos']);
+        }, 1500);
       },
-      error: (err) => {
-        this.errorMessage = 'Error actualizando producto: ' + err.message;
+      error: (err: any) => {
+        if (err.status === 0) {
+          this.toastService.error('No se puede conectar al servidor. Asegúrate de que el backend esté corriendo.');
+        } else {
+          this.toastService.error('Error actualizando producto: ' + (err.error?.message || err.message));
+        }
         this.loading = false;
       }
     });

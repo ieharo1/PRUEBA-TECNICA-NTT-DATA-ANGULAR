@@ -1,61 +1,138 @@
-<div class="card-container">
+<div class="form-container">
   <div class="form-card">
-    <h2>Editar Producto</h2>
-    <div *ngIf="loading">Cargando...</div>
-    <div *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="id">ID</label>
-          <input id="id" formControlName="id" />
-        </div>
-        <div class="form-group">
-          <label for="name">Nombre</label>
-          <input id="name" formControlName="name" />
-          <div *ngIf="f['name'].touched && f['name'].invalid" class="error-msg">
-            <small *ngIf="f['name'].errors?.['required']">Nombre es obligatorio.</small>
-            <small *ngIf="f['name'].errors?.['minlength']">Mínimo 3 caracteres.</small>
-          </div>
-        </div>
+    <div class="form-header">
+      <div class="header-icon edit">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 2.828 112.828L11.828 15H9v-2.828l8.586-8.586z"/>
+        </svg>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="description">Descripción</label>
-          <textarea id="description" formControlName="description"></textarea>
-          <div *ngIf="f['description'].touched && f['description'].invalid" class="error-msg">
-            <small *ngIf="f['description'].errors?.['required']">Descripción es obligatoria.</small>
-            <small *ngIf="f['description'].errors?.['minlength']">Mínimo 5 caracteres.</small>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="logo">Logo URL</label>
-          <input id="logo" formControlName="logo" />
-          <div *ngIf="f['logo'].touched && f['logo'].invalid" class="error-msg">
-            <small *ngIf="f['logo'].errors?.['required']">Logo es obligatorio.</small>
-            <small *ngIf="f['logo'].errors?.['pattern']">Debe ser una URL válida.</small>
-          </div>
-        </div>
+      <h2>Editar Producto</h2>
+      <p>Actualiza los datos del producto</p>
+    </div>
+
+    @if (loading) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Cargando producto...</p>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="date_release">Fecha de lanzamiento</label>
-          <input type="date" id="date_release" formControlName="date_release" />
-          <div *ngIf="f['date_release'].touched && f['date_release'].invalid" class="error-msg">
-            <small *ngIf="f['date_release'].errors?.['required']">Fecha de lanzamiento es obligatoria.</small>
+    }
+
+    @if (errorMessage) {
+      <div class="error-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (!loading && !errorMessage && form) {
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="product-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="id">
+              <span class="label-icon">🏷️</span> ID del Producto
+            </label>
+            <input id="id" formControlName="id" readonly class="readonly" />
+            <span class="field-hint">El ID no se puede modificar</span>
+          </div>
+
+          <div class="form-group">
+            <label for="name">
+              <span class="label-icon">📝</span> Nombre del Producto
+            </label>
+            <input 
+              id="name" 
+              formControlName="name" 
+              placeholder="Ej: Producto Premium"
+              [class.error]="form.get('name')?.invalid && form.get('name')?.touched"
+            />
+            @if (form.get('name')?.invalid && form.get('name')?.touched) {
+              <span class="field-error">Mínimo 5 caracteres</span>
+            }
+          </div>
+
+          <div class="form-group full-width">
+            <label for="description">
+              <span class="label-icon">📋</span> Descripción
+            </label>
+            <textarea 
+              id="description" 
+              formControlName="description"
+              placeholder="Describe las características del producto..."
+              rows="3"
+              [class.error]="form.get('description')?.invalid && form.get('description')?.touched"
+            ></textarea>
+            @if (form.get('description')?.invalid && form.get('description')?.touched) {
+              <span class="field-error">Mínimo 10 caracteres</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="logo">
+              <span class="label-icon">🖼️</span> URL del Logo
+            </label>
+            <input 
+              id="logo" 
+              formControlName="logo" 
+              placeholder="https://ejemplo.com/logo.png"
+              [class.error]="form.get('logo')?.invalid && form.get('logo')?.touched"
+            />
+            @if (form.get('logo')?.invalid && form.get('logo')?.touched) {
+              <span class="field-error">URL requerida</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="date_release">
+              <span class="label-icon">📅</span> Fecha de Liberación
+            </label>
+            <input 
+              type="date" 
+              id="date_release" 
+              formControlName="date_release"
+              [class.error]="form.get('date_release')?.invalid && form.get('date_release')?.touched"
+            />
+            @if (form.get('date_release')?.invalid && form.get('date_release')?.touched) {
+              <span class="field-error">Fecha requerida</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="date_revision">
+              <span class="label-icon">🔄</span> Fecha de Revisión
+            </label>
+            <input 
+              type="date" 
+              id="date_revision" 
+              formControlName="date_revision"
+              [class.error]="form.get('date_revision')?.invalid && form.get('date_revision')?.touched"
+            />
+            @if (form.get('date_revision')?.invalid && form.get('date_revision')?.touched) {
+              <span class="field-error">Fecha requerida</span>
+            }
           </div>
         </div>
-        <div class="form-group">
-          <label for="date_revision">Fecha de revisión</label>
-          <input type="date" id="date_revision" formControlName="date_revision" />
-          <div *ngIf="f['date_revision'].touched && f['date_revision'].invalid" class="error-msg">
-            <small *ngIf="f['date_revision'].errors?.['required']">Fecha de revisión es obligatoria.</small>
-          </div>
+
+        <div class="form-actions">
+          <button type="button" (click)="goBack()" class="btn-cancel">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+            Cancelar
+          </button>
+          <button 
+            type="submit" 
+            [disabled]="form.invalid" 
+            class="btn-submit"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 13l4 4L19 7"/>
+            </svg>
+            Guardar Cambios
+          </button>
         </div>
-      </div>
-      <div class="form-actions">
-        <button type="button" class="btn-secondary" (click)="goBack()">Cancelar</button>
-        <button type="submit" class="btn-enviar" [disabled]="form.invalid">Guardar Cambios</button>
-      </div>
-    </form>
+      </form>
+    }
   </div>
 </div>
